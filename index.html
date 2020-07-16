@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <!-- FontAwesom CSS -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+
+    <!--CSS custom -->
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div id="appMoviles">
+      <div class="container">
+        <header>
+          <h2 class="text-center text-dark">
+            <span class="badge badge-success">{{title}}</span>
+          </h2>
+        </header>
+
+        <div class="row">
+          <div class="col">
+            <button
+              @click="btnNew"
+              class="btn btn-success"
+              title="Nuevo"
+              v-if="state === 'read'"
+            >
+              <i class="fas fa-plus-circle fa-2x"></i>
+            </button>
+            <button
+              @click="btnCancel"
+              class="btn btn-danger"
+              title="Cancel"
+              v-else
+            >
+              <i class="fas fa-times-circle fa-2x"></i>
+            </button>
+          </div>
+          <div class="col text-right">
+            <h5>
+              Stock Total:
+              <span class="badge badge-success">{{ totalStock }}</span>
+            </h5>
+          </div>
+        </div>
+
+        <form @submit.prevent v-if="state === 'create' || state === 'edit'">
+          <div class="row" v-if="error">
+            <div class="col text-center">Rellenar todos los campos</div>
+          </div>
+          <div class="pt-4 row text-center">
+            <div class="col">
+              <label>Marca</label>
+              <input
+                required
+                type="text"
+                class="form-control text-center"
+                v-model="movil.marca"
+              />
+            </div>
+            <div class="col">
+              <label>Modelo</label>
+              <input
+                required
+                type="text"
+                class="form-control text-center"
+                v-model="movil.modelo"
+              />
+            </div>
+            <div class="col">
+              <label>Stock</label>
+              <input
+                required
+                type="number"
+                class="form-control text-center"
+                v-model="movil.stock"
+              />
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="pt-4 col">
+              <button
+                class="btn btn-success"
+                @click="btnAdd"
+                v-if="state === 'create'"
+              >
+                Guardar
+              </button>
+              <button
+                class="btn btn-secondary"
+                @click="btnUpdate(movilEdit)"
+                v-else
+              >
+                Actualizar
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="row mt-5">
+          <div class="col-lg-12">
+            <table class="table table-striped" v-if="hasProducts">
+              <thead>
+                <tr class="bg-primary text-light">
+                  <th>ID</th>
+                  <th>Marca</th>
+                  <th>Modelo</th>
+                  <th>Stock</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="movil in moviles" :key="movil.id">
+                  <td>{{ movil.id }}</td>
+                  <td>{{ movil.marca }}</td>
+                  <td>{{ movil.modelo }}</td>
+                  <td>
+                    <div class="col-md-8">
+                      <input
+                        type="number"
+                        class="form-control text-right"
+                        disabled
+                        v-model="movil.stock"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button
+                        class="btn btn-secondary"
+                        title="Editar"
+                        @click="btnEdit(movil)"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        title="Eliminar"
+                        @click="btnDelete(movil.id)"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h2 class="text-center" v-else>No hay productos en Stock</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Vue.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!--Código custom -->
+    <script src="main.js"></script>
+  </body>
+</html>
